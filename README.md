@@ -1,0 +1,6 @@
+実行環境はwslでpipenv
+現状jwtの設定をしていない、だれでもdbに書き込めるので修正が必要
+controllersにラズパイの制御
+databaseにsupabase関連のコード
+main.pyでwaiting_logに水分摂取量記録
+python3 database/sync_supabase.py でwaiting_logの内容をpost、processed_logsにpostした情報を保存
