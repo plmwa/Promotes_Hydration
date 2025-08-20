@@ -33,8 +33,7 @@ class WeightSensor:
         指定された回数重量を測定し、その平均値を返します。
         """
         try:
-            # 負の値が返ってきた場合、0として扱う
-            weight = max(0, self.hx.get_weight(times))
+            weight = self.hx.get_weight(times)
             return weight
         except Exception as e:
             print(f"重量の取得中にエラーが発生しました: {e}")

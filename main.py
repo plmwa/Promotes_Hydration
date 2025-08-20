@@ -100,10 +100,10 @@ class HydrationMonitor:
             
             if weight_diff >= config.WEIGHT_THRESHOLD_G:
                 print(f"\n水分補給を検知しました！ 重量変化: {weight_diff:.2f} g")
-                print("タイマーをリセットします。")
-                self.last_significant_weight = current_weight
-                
-                self.log_weight(self.last_significant_weight)
+                self.servo.move_to_min_angle()
+                print("サーボを初期位置に戻しました。")
+                self.wait_for_cup()  # コップが置かれるまで待機
+                print("リセットします。")
                 start_time = time.time()
 
             time.sleep(10)
@@ -130,18 +130,9 @@ class HydrationMonitor:
 
             if weight_diff >= config.WEIGHT_THRESHOLD_G:
                 print("\n警告中に水分補給を検知しました！")
-                
-                # 1. まずサーボを-90度の初期位置に戻します
+                # サーボを-90度の初期位置に戻します
                 self.servo.move_to_min_angle()
-                print("サーボを初期位置に戻しました。重量を再計測します。")
-                time.sleep(1) # 安定するまで少し待つ
-
-                # 2. サーボが戻った後で、改めて正確な重量を計測します
-                new_stable_weight = self.sensor.get_weight(config.SENSOR_READ_TIMES)
-                
-                # 3. 新しく計測した重量を記録します
-                self.last_significant_weight = new_stable_weight
-                self.log_weight(self.last_significant_weight)
+                print("サーボを初期位置に戻しました。")
                 return
         print("\n警告動作が完了しました。これ以上水はこぼせません")
         self.servo.move_to_min_angle()
