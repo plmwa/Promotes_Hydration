@@ -106,7 +106,7 @@ class HydrationMonitor:
                 print("リセットします。")
                 start_time = time.time()
 
-            time.sleep(10)
+            time.sleep(1)
         
         print(f"\n{config.MONITORING_DURATION_S / 60:.0f}分間、規定の重量変化がありませんでした。")
         return False

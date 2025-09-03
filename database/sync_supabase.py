@@ -12,6 +12,7 @@ PROCESSED_LOGS_DIR = "processed_logs"
 load_dotenv()
 SUPABASE_URL = os.getenv("SUPABASE_URL")
 SUPABASE_KEY = os.getenv("SUPABASE_KEY")
+CUP_WEIGHT_G = os.getenv("CUP_WEIGHT_G", 205)
 # 一旦仮置き
 USER_ID = os.getenv("USER_ID")
 GRAM_TO_ML = 1.0
@@ -50,6 +51,13 @@ def calculate_intake_from_csv(file_path):
 
         if weight_diff > 0:
             intake_ml = int(weight_diff * GRAM_TO_ML)
+            intake_events.append({
+                'time': current_event['timestamp'],
+                'amount': intake_ml
+            })
+
+        elif weight_diff < -10:
+            intake_ml = int(prev_event['weight'] - CUP_WEIGHT_G)
             intake_events.append({
                 'time': current_event['timestamp'],
                 'amount': intake_ml
