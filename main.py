@@ -100,7 +100,7 @@ class HydrationMonitor:
             
             if weight_diff >= config.WEIGHT_THRESHOLD_G:
                 print(f"\n水分補給を検知しました！ 重量変化: {weight_diff:.2f} g")
-                self.servo.move_to_min_angle()
+                self.servo.move_to_max_angle()
                 print("サーボを初期位置に戻しました。")
                 self.wait_for_cup()  # コップが置かれるまで待機
                 print("リセットします。")
