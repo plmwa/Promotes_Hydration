@@ -34,6 +34,19 @@ class ServoController:
         サーボを最大角度に移動させます。
         """
         print(f"サーボを最大位置 ({self.max_angle}度) に移動します。")
+        self.servo.angle = self.max_angle/4
+        time.sleep(0.5)
+        self.servo.angle = self.max_angle/2
+        time.sleep(0.5)
+        self.servo.angle = self.max_angle
+        time.sleep(1) # 動作完了まで待機
+        self.detach()
+
+    def move_to_max_angle_start(self):
+        """
+        サーボを最大角度に移動させます。
+        """
+        print(f"サーボを最大位置 ({self.max_angle}度) に移動します。")
         self.servo.angle = self.max_angle
         time.sleep(1) # 動作完了まで待機
         self.detach()
@@ -43,7 +56,7 @@ class ServoController:
         指定された時間をかけて、最大角度から最小角度までゆっくり回転します。
         ジェネレータとして角度を1つずつ返します。
         """
-        step_interval = duration_sec / (self.max_angle - self.min_angle)
+        step_interval = duration_sec / (self.max_angle - self.min_angle) 
         print(f"{duration_sec}秒かけてサーボを回転させます...")
 
         for angle in range(self.max_angle, self.min_angle - 1, -1):

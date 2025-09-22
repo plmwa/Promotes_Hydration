@@ -131,17 +131,17 @@ class HydrationMonitor:
             if weight_diff >= config.WEIGHT_THRESHOLD_G:
                 print("\n警告中に水分補給を検知しました！")
                 # サーボを-90度の初期位置に戻します
-                self.servo.move_to_min_angle()
+                self.servo.move_to_max_angle()
                 print("サーボを初期位置に戻しました。")
                 return
         print("\n警告動作が完了しました。これ以上水はこぼせません")
-        self.servo.move_to_min_angle()
+        self.servo.move_to_max_angle()
 
     def run(self):
         """
         プログラムのメインループ
         """
-        self.servo.move_to_min_angle()
+        self.servo.move_to_max_angle_start()
         self.wait_for_cup()
 
         while True:
