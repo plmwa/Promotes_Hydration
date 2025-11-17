@@ -56,12 +56,15 @@ class ServoController:
         指定された時間をかけて、最大角度から最小角度までゆっくり回転します。
         ジェネレータとして角度を1つずつ返します。
         """
-        step_interval = duration_sec / (self.max_angle - self.min_angle)
+        step_interval = duration_sec / ((self.max_angle - self.min_angle))
         print(f"{duration_sec}秒かけてサーボを回転させます...")
+        print(step_interval)
 
-        for angle in range(self.max_angle, self.min_angle - 1, -1):
+        for angle in range(self.max_angle, self.min_angle, -1):
             self.servo.angle = angle
             yield angle  # 現在の角度を返す
+            time.sleep(0.5)
+            self.servo.angle = None
             time.sleep(step_interval)
             
 

@@ -4,7 +4,7 @@ HX711_DATA_PIN = 5   # HX711のDATピン
 HX711_CLK_PIN = 6    # HX711のSCKピン
 
 # --- サーボモーター設定 ---
-SERVO_MIN_ANGLE = -50
+SERVO_MIN_ANGLE = -40
 SERVO_MAX_ANGLE = 90
 
 # --- センサー・ロジック設定 ---
@@ -17,14 +17,15 @@ WEIGHT_THRESHOLD_G = 150
 
 # 水分補給がないと判断する時間（秒）
 # 25分 = 1500秒
-MONITORING_DURATION_S = 20
+# 15 = 900
+MONITORING_DURATION_S = 900
 
 #CUP_WEIGHT_G
 CUP_WEIGHT_G = 205  # カップの重さ（グラム）
 
 # 警告としてサーボを動かす時間（秒）
 # 5分 = 300秒
-ALERT_DURATION_S = 120
+ALERT_DURATION_S =60
 
 # 測定の安定性を高めるための読み取り回数
 SENSOR_READ_TIMES = 5
