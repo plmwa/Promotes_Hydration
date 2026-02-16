@@ -1,2 +1,35 @@
+# supabaseのkey
 .env
-myenv
+
+# 仮想環境
+myvenv/
+
+# Copilotのプロンプトたち
+.github/
+
+# Python
+__pycache__/
+*.py[cod]
+*.pyo
+*.pyd
+.Python
+
+# ログファイル
+waiting_log/*.csv
+processed_logs/*.csv
+!waiting_log/.gitkeep
+!processed_logs/.gitkeep
+
+# 旧ファイル（アーカイブ）
+config.py.old
+hx711.py
+
+# OS
+.DS_Store
+Thumbs.db
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
