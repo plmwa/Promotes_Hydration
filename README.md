@@ -1,4 +1,4 @@
-# 水分補給促進デバイス
+# げんちゃーじ
 
 コップの重量を監視し、一定時間水分補給がない場合にサーボモータでコップを傾けて警告を発する水分補給促進デバイスです。
 
@@ -8,30 +8,36 @@
 Promotes_Hydration/
 ├── config/                  # 設定モジュール
 │   ├── __init__.py
-│   └── settings.py         # 全設定を一元管理
+│   └── settings.py         # 全設定を一元管理（dataclass使用）
 ├── controllers/            # ハードウェア制御
 │   ├── __init__.py
 │   ├── servo_controller.py # サーボモーター制御
-│   └── weight_sensor.py    # 重量センサー制御
+│   └── weight_sensor.py    # 重量センサー制御（HX711）
 ├── core/                   # コアロジック
 │   ├── __init__.py
-│   ├── logger.py          # ロギング処理
-│   └── state_machine.py   # ステートマシン
+│   ├── logger.py          # ロギング処理（CSV記録）
+│   └── state_machine.py   # ステートマシン（状態管理）
 ├── services/              # 外部サービス連携
 │   ├── __init__.py
 │   └── sync_service.py    # Supabase同期処理
 ├── utils/                 # ユーティリティ
 │   ├── __init__.py
-│   └── hx711.py          # HX711ドライバ
-├── tests/                 # テストファイル
+│   └── hx711.py          # HX711ドライバライブラリ
+├── tests/                 # テスト・デバッグ用
 │   ├── __init__.py
-│   ├── README.md
-│   ├── test.py           # センサーテスト
-│   └── example.py        # サーボテスト
-├── waiting_log/           # 重量ログ（CSV）
-├── processed_logs/        # 処理済みログ
+│   ├── README.md         # テスト手順
+│   ├── test.py           # HX711センサーテスト
+│   └── example.py        # サーボモーターテスト
+├── waiting_log/           # 重量ログ（CSV形式）
+│   └── weight_log.csv    # 未同期ログ
+├── .github/               # GitHub設定
+│   └── copilot-instructions.md
 ├── main.py               # メインプログラム
-├── requirements.txt      # 依存パッケージ
+├── hx711.py              # HX711ドライバ（後方互換用）
+├── sequence.md           # システムシーケンス図
+├── sequence.png          # シーケンス図画像
+├── requirements.txt      # 依存パッケージリスト
+├── .gitignore           # Git除外設定
 └── README.md            # このファイル
 ```
 
@@ -49,8 +55,13 @@ Promotes_Hydration/
 ### 1. 依存パッケージのインストール
 
 ```bash
+# 仮想環境がない場合は作成
 python -m venv myvenv
+
+# 仮想環境を有効化
 source myvenv/bin/activate
+
+# 依存パッケージをインストール
 pip install -r requirements.txt
 ```
 
@@ -96,17 +107,17 @@ python -m services.sync_service
 ```
 
 ## ハードウェア構成
+| 部品 | ピン | 接続先 |
+|------|------|--------|
+| サーボモーター | 信号線 | GPIO 12 |
+| サーボモーター | VCC | 5V（外部電源推奨）|
+| サーボモーター | GND | GND |
+| HX711 | DT | GPIO 5 |
+| HX711 | SCK | GPIO 6 |
+| HX711 | VCC | 3.3V または 5V |
+| HX711 | GND | GND |
 
-- **Raspberry Pi**: メイン制御ユニット
-- **HX711**: ロードセル用ADC
-- **ロードセル**: 重量測定
-- **サーボモーター**: コップ傾け機構
-
-### 配線（デフォルト）
-
-- サーボモーター信号線: GPIO 12
-- HX711 DATA: GPIO 5
-- HX711 CLK: GPIO 6
+> **注意**: サーボモーターには外部電源を使用することを推奨します。Raspberry Piから直接給電すると電圧降下が発生する可能性があります。
 
 ### デバッグ
 
@@ -134,15 +145,3 @@ ALERT_DURATION_S: int = 20       # 20秒（テスト用）
 
 1. センサーの固定を確認
 2. 読み取り回数（`READ_TIMES`）を増やす
-
-## リファクタリングの変更点
-
-### 旧ファイルについて
-
-- `config.py.old`: 旧設定ファイル（新しい`config/settings.py`を使用してください）
-- `database/sync_supabase.py`: 旧同期スクリプト（新しい`services/sync_service.py`を使用してください）
-
-## 参考文献
-
-- [gpiozero Documentation](https://gpiozero.readthedocs.io/)
-- [HX711 Python Library](https://github.com/tatobari/hx711py)
