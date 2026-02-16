@@ -20,10 +20,6 @@ processed_logs/*.csv
 !waiting_log/.gitkeep
 !processed_logs/.gitkeep
 
-# 旧ファイル（アーカイブ）
-config.py.old
-hx711.py
-
 # OS
 .DS_Store
 Thumbs.db
